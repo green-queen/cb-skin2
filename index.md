@@ -1,5 +1,5 @@
 ---
-layout: browse.html
+layout: browse
 title: Home
 ---
 
