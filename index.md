@@ -1,5 +1,5 @@
 ---
-layout: home-infographic
+layout: browse
 title: Home
 ---
 
