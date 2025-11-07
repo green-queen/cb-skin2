@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<style>
+
+  :root {
+    --width: 300px;
+    --x-speed: 13s;
+    --y-speed: 7s;
+    --transition-speed: 2.2s;
+  }
+
+  .blob { 
+    width: var(--width);
+    height: var(--width);
+    background: #90A4AE;
+    transition: border-radius var(--transition-speed) linear;
+    box-shadow: 0 0 1rem rgba(0, 0, 0, 0.1);
+  }
+  .blob-2 {
+    position: absolute;
+    top: 0;
+    right: 0;
+  }
+  .blob-2 .blob {
+    background: #B0BEC5;
+  }
+
+  body {
+    margin: 0;
+    overflow: hidden;
+    background: #546E7A;
+  }
+
+  .x {
+    animation: x var(--x-speed) linear infinite alternate;
+  }
+  .x2 {
+    animation: x2 var(--x-speed) linear infinite alternate;
+  }
+  .y {
+    animation: y var(--y-speed) linear infinite alternate;
+  }
+
+  @keyframes x {
+    100% {
+      transform: translateX(calc(100vw - var(--width)));
+    }
+  }
+  @keyframes x2 {
+    100% {
+      transform: translateX(calc(-100vw + var(--width)));
+    }
+  }
+
+  @keyframes y {
+    100% {
+      transform: translateY(calc(100vh - var(--width)));
+    }
+  }
+
+
+  .inputs {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 300px;
+    padding: 20px;
+    background: rgba(0, 0, 0, 0.5);
+    color: white;
+  }
+  .inputs label {
+    flex: 1;
+  }
+  .inputs input {
+    width: 100%;
+  }
+</style>
+<script>
+const blobs = document.querySelectorAll(".blob");
+let last = 0;
+let changeSpeed = 1500;
+let rAF;
+
+function render(now) {
+  if (!last || now - last >= changeSpeed) {
+    last = now;
+    blobs.forEach(blob => {
+      blob.style.borderTopLeftRadius = `${random()}px ${random()}px`;
+      blob.style.borderTopRightRadius = `${random()}px ${random()}px`;
+      blob.style.borderBottomLeftRadius = `${random()}px ${random()}px`;
+      blob.style.borderBottomRightRadius = `${random()}px ${random()}px`;
+    });
+  }
+  rAF = requestAnimationFrame(render);
+}
+
+const random = () => {
+  return Math.floor((Math.random() * 1000000));
+};
+
+render(last);
+
+const root = document.documentElement;
+
+const widthSlider = document.querySelector("#width-range");
+widthSlider.addEventListener("input", e => {
+  root.style.setProperty('--width', e.target.value + "px");
+})
+const xSlider = document.querySelector("#x-range");
+xSlider.addEventListener("input", e => {
+  root.style.setProperty('--x-speed', e.target.value + "s");
+})
+const ySlider = document.querySelector("#y-range");
+ySlider.addEventListener("input", e => {
+  root.style.setProperty('--y-speed', e.target.value + "s");
+})
+const transitionSlider = document.querySelector("#transition-speed");
+transitionSlider.addEventListener("input", e => {
+  root.style.setProperty('--transition-speed', e.target.value + "s");
+})
+const changeSlider = document.querySelector("#change-speed");
+transitionSlider.addEventListener("input", e => {
+  cancelAnimationFrame(rAF);
+  last = 0;
+  render(last);
+  changeSpeed = e.target.value;
+})
+
+</script>
+</head>
+</html>
+
+
+
+<div class="blob-wrap x">
+  <div class="blob y"></div>
+</div>
+
+<div class="blob-wrap blob-2 x2">
+  <div class="blob y"></div>
+</div>
+
+
